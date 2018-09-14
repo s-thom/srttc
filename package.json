@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/s-thom/srttc/issues"
   },
-  "homepage": "https://github.com/s-thom/srttc#readme"
+  "homepage": "https://github.com/s-thom/srttc#readme",
+  "devDependencies": {
+    "@types/mocha": "^5.2.5",
+    "mocha": "^5.2.0"
+  }
 }
