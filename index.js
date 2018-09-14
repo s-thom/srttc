@@ -84,7 +84,11 @@ function compare(value, definition, parentList) {
     return true;
   } else if (typeof definition === 'function') {
     // Compare constructor function
-    throw new Error('Not implemented');
+    if (!(typeof value === 'object')) {
+      return false;
+    }
+
+    return value instanceof definition;
   } else if (typeof definition === 'object') {
     // Compare object properties
     throw new Error('Not implemented');

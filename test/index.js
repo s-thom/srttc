@@ -551,3 +551,32 @@ describe('String type definitions', () => {
     });
   });
 });
+
+describe('Function type definitions', () => {
+  describe('Constructor checks', () => {
+    it('should allow constructor functions to be checked', () => {
+      assert.equal(srttc([], Array), true);
+      assert.equal(srttc(new Error('an error'), Error), true);
+      assert.equal(srttc(new Error('an error'), Object), true);
+
+      class TestClass {}
+
+      assert.equal(srttc(new TestClass(), TestClass), true);
+    });
+
+    it('should disallow incorrect constructor functions', () => {
+      assert.equal(srttc([], Error), false);
+
+      class TestClass {}
+
+      assert.equal(srttc([], TestClass), false);
+      assert.equal(srttc({}, TestClass), false);
+    });
+
+    it('should disallow incorrect values', () => {
+      assert.equal(srttc(5, Error), false);
+      assert.equal(srttc('some string', Array), false);
+      assert.equal(srttc(null, Object), false);
+    });
+  });
+});
