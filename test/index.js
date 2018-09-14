@@ -11,6 +11,8 @@ describe('String type definitions', () => {
       assert.equal(srttc({}, 'any'), true);
       assert.equal(srttc([], 'any'), true);
       assert.equal(srttc(() => {}, 'any'), true);
+      assert.equal(srttc(null, 'any'), true);
+      assert.equal(srttc(undefined, 'any'), true);
     });
 
     it('should disallow invalid definition strings', () => {
@@ -359,6 +361,192 @@ describe('String type definitions', () => {
 
       it('should disallow array arrays', () => {
         assert.equal(srttc([[], []], 'function[]'), false);
+      });
+    });
+  });
+
+  describe('Optional Types', () => {
+    describe('any?', () => {
+      it('should allow anything', () => {
+        assert.equal(srttc('', 'any?'), true);
+        assert.equal(srttc(5, 'any?'), true);
+        assert.equal(srttc(true, 'any?'), true);
+        assert.equal(srttc({}, 'any?'), true);
+        assert.equal(srttc([], 'any?'), true);
+        assert.equal(srttc(() => {}, 'any?'), true);
+        assert.equal(srttc(null, 'any?'), true);
+        assert.equal(srttc(undefined, 'any?'), true);
+      });
+    });
+
+    describe('string?', () => {
+      it('should allow strings', () => {
+        assert.equal(srttc('any old string', 'string?'), true);
+      });
+
+      it('should allow null', () => {
+        assert.equal(srttc(null, 'string?'), true);
+      });
+
+      it('should allow undefined', () => {
+        assert.equal(srttc(undefined, 'string?'), true);
+      });
+
+      it('should disallow numbers', () => {
+        assert.equal(srttc(5, 'string?'), false);
+      });
+
+      it('should disallow booleans', () => {
+        assert.equal(srttc(true, 'string?'), false);
+      });
+
+      it('should disallow arrays', () => {
+        assert.equal(srttc([], 'string?'), false);
+      });
+
+      it('should disallow objects', () => {
+        assert.equal(srttc({}, 'string?'), false);
+      });
+
+      it('should disallow functions', () => {
+        assert.equal(srttc(() => {}, 'string?'), false);
+      });
+    });
+
+    describe('number?', () => {
+      it('should allow numbers', () => {
+        assert.equal(srttc(5, 'number?'), true);
+      });
+
+      it('should allow null', () => {
+        assert.equal(srttc(null, 'number?'), true);
+      });
+
+      it('should allow undefined', () => {
+        assert.equal(srttc(undefined, 'number?'), true);
+      });
+
+      it('should disallow strings', () => {
+        assert.equal(srttc('any old string', 'number?'), false);
+      });
+
+      it('should disallow booleans', () => {
+        assert.equal(srttc(true, 'number?'), false);
+      });
+
+      it('should disallow arrays', () => {
+        assert.equal(srttc([], 'number?'), false);
+      });
+
+      it('should disallow objects', () => {
+        assert.equal(srttc({}, 'number?'), false);
+      });
+
+      it('should disallow functions', () => {
+        assert.equal(srttc(() => {}, 'number?'), false);
+      });
+    });
+
+    describe('boolean?', () => {
+      it('should allow booleans', () => {
+        assert.equal(srttc(true, 'boolean?'), true);
+        assert.equal(srttc(false, 'boolean?'), true);
+      });
+
+      it('should allow null', () => {
+        assert.equal(srttc(null, 'boolean?'), true);
+      });
+
+      it('should allow undefined', () => {
+        assert.equal(srttc(undefined, 'boolean?'), true);
+      });
+
+      it('should disallow strings', () => {
+        assert.equal(srttc('any old string', 'boolean?'), false);
+      });
+
+      it('should disallow numbers', () => {
+        assert.equal(srttc(5, 'boolean?'), false);
+      });
+
+      it('should disallow arrays', () => {
+        assert.equal(srttc([], 'boolean?'), false);
+      });
+
+      it('should disallow objects', () => {
+        assert.equal(srttc({}, 'boolean?'), false);
+      });
+
+      it('should disallow functions', () => {
+        assert.equal(srttc(() => {}, 'boolean?'), false);
+      });
+    });
+
+    describe('object?', () => {
+      it('should allow objects', () => {
+        assert.equal(srttc({}, 'object?'), true);
+      });
+
+      it('should allow arrays', () => {
+        assert.equal(srttc([], 'object?'), true);
+      });
+
+      it('should allow null', () => {
+        assert.equal(srttc(null, 'object?'), true);
+      });
+
+      it('should allow undefined', () => {
+        assert.equal(srttc(undefined, 'object?'), true);
+      });
+
+      it('should disallow strings', () => {
+        assert.equal(srttc('any old string', 'object?'), false);
+      });
+
+      it('should disallow numbers', () => {
+        assert.equal(srttc(5, 'object?'), false);
+      });
+
+      it('should disallow booleans', () => {
+        assert.equal(srttc(true, 'object?'), false);
+      });
+
+      it('should disallow functions', () => {
+        assert.equal(srttc(() => {}, 'object?'), false);
+      });
+    });
+
+    describe('function?', () => {
+      it('should allow strings', () => {
+        assert.equal(srttc(() => {}, 'function?'), true);
+      });
+
+      it('should allow null', () => {
+        assert.equal(srttc(null, 'function?'), true);
+      });
+
+      it('should allow undefined', () => {
+        assert.equal(srttc(undefined, 'function?'), true);
+      });
+
+      it('should disallow strings', () => {
+        assert.equal(srttc('any old string', 'function?'), false);
+      });
+
+      it('should disallow numbers', () => {
+        assert.equal(srttc(5, 'function?'), false);
+      });
+
+      it('should disallow booleans', () => {
+        assert.equal(srttc(true, 'function?'), false);
+      });
+
+      it('should disallow arrays', () => {
+        assert.equal(srttc([], 'function?'), false);
+      });
+
+      it('should disallow objects', () => {
+        assert.equal(srttc({}, 'function?'), false);
       });
     });
   });
