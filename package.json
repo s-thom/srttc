@@ -1,0 +1,19 @@
+{
+  "name": "srttc",
+  "version": "1.0.0",
+  "description": "Simple Run-Time Type Checker",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s-thom/srttc.git"
+  },
+  "author": "Stuart Thomson <stu.thom.96@gmail.com> (https://sthom.kiwi/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/s-thom/srttc/issues"
+  },
+  "homepage": "https://github.com/s-thom/srttc#readme"
+}
