@@ -56,8 +56,32 @@ function compare(value, definition, parentList) {
 
     return typeof value === type;
   } else if (Array.isArray(definition)) {
+    if (!Array.isArray(value)) {
+      return false;
+    }
+
     // Compare each item in value array to see if it matches any of the items in the definition
-    throw new Error('Not implemented');
+    for (let i = 0; i < value.length; i++) {
+      const element = value[i];
+      let isElementValid = false;
+
+      for (let j = 0; j < definition.length; j++) {
+        const type = definition[j];
+
+        if (compare(element, type, newParentList)) {
+          isElementValid = true;
+          break;
+        }
+      }
+
+      // If this element in the value array didn't match, then the array is invalid
+      if (!isElementValid) {
+        return false;
+      }
+    }
+
+    // All items in the array must be fine, so array is fine
+    return true;
   } else if (typeof definition === 'function') {
     // Compare constructor function
     throw new Error('Not implemented');
