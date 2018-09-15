@@ -1,3 +1,4 @@
+/* global describe:false, it:false */
 const assert = require('assert').strict;
 
 const srttc = require('../index');
@@ -577,6 +578,82 @@ describe('Function type definitions', () => {
       assert.equal(srttc(5, Error), false);
       assert.equal(srttc('some string', Array), false);
       assert.equal(srttc(null, Object), false);
+    });
+  });
+});
+
+describe('Object type definitions', () => {
+  describe('Circular references', () => {
+    it('should catch circular definition object references', () => {
+      const defA = {};
+      const defB = {};
+
+      // Set up circular reference between definition objects
+      defA.b = defB;
+      defB.a = defA;
+
+      // Note, actual object doesn't have to be circular
+      const actualObj = {
+        b: {
+          a: {
+            b: {},
+          },
+        },
+      };
+
+      assert.throws(() => {
+        srttc(actualObj, defA);
+      });
+    });
+
+    it('should catch circular definition array references', () => {
+      const defA = [];
+      const defB = [];
+
+      // Set up circular reference between definition objects
+      defA.push(defB);
+      defB.push(defA);
+
+      // Note, actual object doesn't have to be circular
+      const actualObj = [[[]]];
+
+      assert.throws(() => {
+        srttc(actualObj, defA);
+      });
+    });
+
+    it('should allow circular value objects', () => {
+      const valA = {};
+      const valB = {};
+
+      // Set up circular reference between value objects
+      valA.b = valB;
+      valB.a = valA;
+
+      // Definition is not circular
+      const definition = {
+        b: {
+          a: {
+            b: {},
+          },
+        },
+      };
+
+      assert.equal(srttc(valA, definition), true);
+    });
+
+    it('should allow circular value arrays', () => {
+      const valA = [];
+      const valB = [];
+
+      // Set up circular reference between value objects
+      valA.push(valB);
+      valB.push(valA);
+
+      // Definition is not circular
+      const definition = [[[Array]]];
+
+      assert.equal(srttc(valA, definition), true);
     });
   });
 });

@@ -27,7 +27,7 @@ function srttc(value, definition) {
 function compare(value, definition, parentList) {
   // Check to avoid circular references
   if (parentList.includes(definition)) {
-    return false;
+    throw new Error('Circular reference in definition detected');
   }
 
   // Parent list to be passed down for the next layer
@@ -84,14 +84,30 @@ function compare(value, definition, parentList) {
     return true;
   } else if (typeof definition === 'function') {
     // Compare constructor function
-    if (!(typeof value === 'object')) {
+    if (typeof value !== 'object') {
       return false;
     }
 
     return value instanceof definition;
   } else if (typeof definition === 'object') {
+    if (typeof value !== 'object') {
+      return false;
+    }
+
     // Compare object properties
-    throw new Error('Not implemented');
+    const definitionKeys = Object.keys(definition);
+    for (let i = 0; i < definitionKeys.length; i++) {
+      const key = definitionKeys[i];
+
+      const isValid = compare(value[key], definition[key], newParentList);
+
+      // If this key does not match, then the object does not match
+      if (!isValid) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   return false;
