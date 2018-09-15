@@ -724,3 +724,97 @@ describe('Object type definitions', () => {
     });
   });
 });
+
+describe('Unions', () => {
+  describe('General unions', () => {
+    describe('string or string[]', () => {
+      it('should allow a string', () => {
+        assert.equal(srttc('any old string', srttc.oneOf('string', 'string[]')), true);
+      });
+
+      it('should allow a string array', () => {
+        assert.equal(srttc(['any old string', 'another string'], srttc.oneOf('string', 'string[]')), true);
+      });
+
+      it('should disallow a number', () => {
+        assert.equal(srttc(5, srttc.oneOf('string', 'string[]')), false);
+      });
+
+      it('should disallow a number array', () => {
+        assert.equal(srttc([5, NaN, 7], srttc.oneOf('string', 'string[]')), false);
+      });
+
+      it('should disallow a mixed type array', () => {
+        assert.equal(srttc(['any old string', ['a string array']], srttc.oneOf('string', 'string[]')), false);
+      });
+    });
+  });
+
+  describe('Optional', () => {
+    it('should allow an object with an optional property', () => {
+      const value = {
+        foo: 5,
+      };
+
+      const definition = {
+        foo: srttc.optional('number'),
+      };
+
+      assert.equal(srttc(value, definition), true);
+    });
+
+    it('should allow an object without an optional property', () => {
+      const value = {};
+
+      const definition = {
+        foo: srttc.optional('number'),
+      };
+
+      assert.equal(srttc(value, definition), true);
+    });
+
+    it('should allow an object with an optional complex property', () => {
+      const value = {
+        foo: {
+          bar: 'baz',
+        },
+      };
+
+      const definition = {
+        foo: srttc.optional({
+          bar: 'string',
+        }),
+      };
+
+      assert.equal(srttc(value, definition), true);
+    });
+
+    it('should allow an object without an optional complex property', () => {
+      const value = {};
+
+      const definition = {
+        foo: srttc.optional({
+          bar: 'string',
+        }),
+      };
+
+      assert.equal(srttc(value, definition), true);
+    });
+
+    it('should disallow an object with an optional property of the wrong type', () => {
+      const value = {
+        foo: 5,
+      };
+
+      const definition = {
+        foo: srttc.optional({
+          bar: 'string',
+        }),
+      };
+
+      assert.equal(srttc(value, definition), false);
+    });
+  });
+});
+
+

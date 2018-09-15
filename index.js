@@ -42,8 +42,8 @@ function compare(value, definition, parentList) {
 
     const [, type, isArray, isOptional] = match;
 
-    if (isOptional && (value === null || value === undefined)) {
-      return true;
+    if (isOptional) {
+      return compare(value, createOptional(type), newParentList);
     }
 
     if (isArray) {
@@ -89,6 +89,22 @@ function compare(value, definition, parentList) {
     }
 
     return value instanceof definition;
+  } else if (definition instanceof UnionType) {
+    // Go through each type in the union, if one matches, then it's good
+    for (let i = 0; i < definition.types.length; i++) {
+      const type = definition.types[i];
+
+      const isValid = compare(value, type, newParentList);
+      if (isValid) {
+        return true;
+      }
+    }
+
+    return false;
+  } else if (typeof definition === 'undefined') {
+    return value === undefined;
+  } else if (definition === null) {
+    return value === null;
   } else if (typeof definition === 'object') {
     if (typeof value !== 'object') {
       return false;
@@ -112,5 +128,24 @@ function compare(value, definition, parentList) {
 
   return false;
 }
+
+class UnionType {
+  constructor(types) {
+    this.types = types;
+  }
+}
+
+function createUnion(...types) {
+  return new UnionType(types);
+}
+
+function createOptional(...types) {
+  return createUnion(null, undefined, ...types);
+}
+
+srttc.or = createUnion;
+srttc.union = createUnion;
+srttc.oneOf = createUnion;
+srttc.optional = createOptional;
 
 module.exports = srttc;
