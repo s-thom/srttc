@@ -656,4 +656,71 @@ describe('Object type definitions', () => {
       assert.equal(srttc(valA, definition), true);
     });
   });
+
+  describe('Nested objects', () => {
+    it('should allow an object with a primitive property', () => {
+      const value = {
+        foo: 5,
+      };
+
+      // Definition is not circular
+      const definition = {
+        foo: 'number',
+      };
+
+      assert.equal(srttc(value, definition), true);
+    });
+
+    it('should disallow an object without a primitive property', () => {
+      const value = {};
+
+      // Definition is not circular
+      const definition = {
+        foo: 'number',
+      };
+
+      assert.equal(srttc(value, definition), false);
+    });
+
+    it('should allow an object with an optional primitive property', () => {
+      const value = {
+        foo: 5,
+      };
+
+      // Definition is not circular
+      const definition = {
+        foo: 'number?',
+      };
+
+      assert.equal(srttc(value, definition), true);
+    });
+
+    it('should allow an object without an optional primitive property', () => {
+      const value = {};
+
+      // Definition is not circular
+      const definition = {
+        foo: 'number?',
+      };
+
+      assert.equal(srttc(value, definition), true);
+    });
+
+    it('should allow an object with an object property', () => {
+      const value = {
+        bar: {
+          foo: 5,
+        },
+      };
+
+      // Definition is not circular
+      const definition = {
+        bar: {
+          foo: 'number',
+        },
+      };
+
+      assert.equal(srttc(value, definition), true);
+    });
+  });
 });
