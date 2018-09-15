@@ -1,6 +1,6 @@
 {
   "name": "srttc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple Run-Time Type Checker",
   "main": "index.js",
   "files": [
