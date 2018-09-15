@@ -47,7 +47,7 @@ function compare(value, definition, parentList) {
     }
 
     if (isArray) {
-      return compare(value, [type], newParentList);
+      return compare(value, createArray(type), newParentList);
     }
 
     if (type === 'any') {
@@ -143,9 +143,14 @@ function createOptional(...types) {
   return createUnion(null, undefined, ...types);
 }
 
+function createArray(type) {
+  return [type];
+}
+
 srttc.or = createUnion;
 srttc.union = createUnion;
 srttc.oneOf = createUnion;
 srttc.optional = createOptional;
+srttc.arrayOf = createArray;
 
 module.exports = srttc;
