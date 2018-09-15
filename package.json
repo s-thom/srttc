@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Simple Run-Time Type Checker",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "mocha"
   },
