@@ -58,12 +58,6 @@ const matches = srttc(new CoolObject(), CoolObject);
 
 #### Property comparison
 
-Throughout this section, this will be the example object:
-
-```js
-const obj = ;
-```
-
 All properties on the definition must be present, but extra properties on the value are ignored
 
 ```js
@@ -74,6 +68,34 @@ const matches = srttc(
   },
   {
     foo: 'number',
+  },
+);
+```
+
+Properties of objects can be primitives (like above) or other objects
+
+```js
+const matches = srttc(
+  {
+    foo: 5,
+    bar: {
+      baz: [
+        new CoolObject(),
+        new CoolObject(),
+      ],
+      quz: {
+        quux: 'some weird string',
+      },
+    },
+  },
+  {
+    foo: 'number',
+    bar: {
+      baz: srttc.arrayOf(CoolObject),
+      quz: {
+        quux: 'string',
+      },
+    },
   },
 );
 ```
