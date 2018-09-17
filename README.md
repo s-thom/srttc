@@ -139,12 +139,14 @@ const matches = srttc('a string', srttc.oneOf('string', 'number'));
 
 #### `srttc.optional()`
 
-Like `srttc.oneOf()`, but also matches on null or undefined.
+The given type, but also matches on null or undefined.
 
 ```js
 const matches = srttc('a string', srttc.optional('string'));
 const matches = srttc(undefined, srttc.optional('string'));
-const matches = srttc('a string', srttc.optional('string', 'number'));
+const matches = srttc('a string', srttc.optional(srttc.oneOf('string', 'number')));
+const matches = srttc(5, srttc.optional(srttc.oneOf('string', 'number')));
+const matches = srttc(null, srttc.optional(srttc.oneOf('string', 'number')));
 ```
 
 #### `srttc.arrayOf()`

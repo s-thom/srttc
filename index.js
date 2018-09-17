@@ -167,8 +167,8 @@ function createUnion(...types) {
   return new UnionType(types);
 }
 
-function createOptional(...types) {
-  return createUnion(null, undefined, ...types);
+function createOptional(type) {
+  return createUnion(null, undefined, type);
 }
 
 function createArray(type, minLength = 0, maxLength = Infinity) {
