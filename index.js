@@ -55,6 +55,30 @@ function compare(value, definition, parentList) {
     }
 
     return typeof value === type;
+  } else if (Array.isArray(definition)) {
+    if (!Array.isArray(value)) {
+      return false;
+    }
+
+    // Compare length of tuple definition to the definition
+    // Since optional type validation is done afterwards, this only needs to
+    // check for when there's more values than definition types
+    if (definition.length < value.length) {
+      return false;
+    }
+
+    for (let i = 0; i < definition.length; i++) {
+      const element = value[i]; // Undefined if not present, which works for optional types
+      const type = definition[i];
+
+      // If this element in the value array didn't match, then the array is invalid
+      if (!compare(element, type, newParentList)) {
+        return false;
+      }
+    }
+
+    // All items in the array must be fine, so array is fine
+    return true;
   } else if (definition instanceof ArrayType) {
     if (!Array.isArray(value)) {
       return false;

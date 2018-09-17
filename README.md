@@ -100,6 +100,30 @@ const matches = srttc(
 );
 ```
 
+### Arrays
+
+#### Primitive arrays
+
+See the section on [primitives](#primitives)
+
+#### Arrays of more complex types
+
+See the section on [the `srttc.arrayOf() function`](#srttcarrayof)
+
+#### Typed arrays of known length (tuples)
+
+Sometimes arrays have different types based on the position in the array
+
+```js
+const matches = srttc([5, 'a string'], ['number', 'string']);
+```
+
+Optional types at the end of the array are supported
+
+```js
+const matches = srttc([5, 'a string'], ['number', 'string', srttc.optional('boolean')]);
+```
+
 ### Extra functions
 
 #### `srttc.oneOf()`

@@ -726,6 +726,33 @@ describe('Object type definitions', () => {
 });
 
 describe('Arrays', () => {
+  describe('Tuples', () => {
+    it('should allow arrays with matching types', () => {
+      assert.equal(srttc(['any old string', 5], ['string', 'number']), true);
+    });
+
+    it('should disallow arrays with non-matching types', () => {
+      assert.equal(srttc([7, 5], ['string', 'number']), false);
+      assert.equal(srttc([7, 'any old string'], ['string', 'number']), false);
+    });
+
+    it('should disallow arrays with fewer values than the definition', () => {
+      assert.equal(srttc(['any old string'], ['string', 'number']), false);
+    });
+
+    it('should disallow arrays with more values than the definition', () => {
+      assert.equal(srttc(['any old string', 7, {}], ['string', 'number']), false);
+    });
+
+    it('should allow arrays with fewer values than the definition, but those values are optional', () => {
+      assert.equal(srttc(['any old string', 7], ['string', 'number', srttc.optional('object'), srttc.optional('boolean')]), true);
+    });
+
+    it('should disallow arrays with fewer values than the definition, but one of those values are not optional', () => {
+      assert.equal(srttc(['any old string', 7], ['string', 'number', srttc.optional('object'), 'boolean']), false);
+    });
+  });
+
   describe('Array length constraints', () => {
     it('should allow arrays with a length within the range', () => {
       assert.equal(srttc(['any old string', 'some other string'], srttc.arrayOf('string', 1, 3)), true);
