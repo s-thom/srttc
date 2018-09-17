@@ -725,6 +725,22 @@ describe('Object type definitions', () => {
   });
 });
 
+describe('Arrays', () => {
+  describe('Array length constraints', () => {
+    it('should allow arrays with a length within the range', () => {
+      assert.equal(srttc(['any old string', 'some other string'], srttc.arrayOf('string', 1, 3)), true);
+    });
+
+    it('should disallow arrays with a length lower than the range', () => {
+      assert.equal(srttc([], srttc.arrayOf('string', 1, 3)), false);
+    });
+
+    it('should disallow arrays with a length higher than the range', () => {
+      assert.equal(srttc(['any old string', 'some other string', 'yet another string', 'i\'m running out of strings'], srttc.arrayOf('string', 1, 3)), false);
+    });
+  });
+});
+
 describe('Unions', () => {
   describe('General unions', () => {
     describe('string or string[]', () => {

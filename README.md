@@ -132,6 +132,15 @@ const matches = srttc(['value 1', 'value 2'], srttc.arrayOf('string'));
 const matches = srttc([['value 1'], ['value 2']], srttc.arrayOf(srttc.arrayOf('string')));
 ```
 
+You can also specify a minimum and maximum length for the array
+
+```js
+const matches = srttc(['value 1', 'value 2'], srttc.arrayOf('string', 0, Infinity));
+const matches = srttc(['value 1', 'value 2'], srttc.arrayOf('string', 0, 2));
+const matches = srttc(['value 1', 'value 2'], srttc.arrayOf('string', 2, 2));
+const matches = srttc(['value 1', 'value 2'], srttc.arrayOf('string', 2, Infinity));
+```
+
 ## Tests
 
 To run the unit tests, just run `npm test`. The tests are defined in `tests/index.js`

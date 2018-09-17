@@ -55,27 +55,23 @@ function compare(value, definition, parentList) {
     }
 
     return typeof value === type;
-  } else if (Array.isArray(definition)) {
+  } else if (definition instanceof ArrayType) {
     if (!Array.isArray(value)) {
+      return false;
+    }
+
+    // Check array length constraints
+    if (value.length < definition.minLength) {
+      return false;
+    } else if (value.length > definition.maxLength) {
       return false;
     }
 
     // Compare each item in value array to see if it matches any of the items in the definition
     for (let i = 0; i < value.length; i++) {
       const element = value[i];
-      let isElementValid = false;
-
-      for (let j = 0; j < definition.length; j++) {
-        const type = definition[j];
-
-        if (compare(element, type, newParentList)) {
-          isElementValid = true;
-          break;
-        }
-      }
-
       // If this element in the value array didn't match, then the array is invalid
-      if (!isElementValid) {
+      if (!compare(element, definition.type, newParentList)) {
         return false;
       }
     }
@@ -135,6 +131,14 @@ class UnionType {
   }
 }
 
+class ArrayType {
+  constructor(type, minLength, maxLength) {
+    this.type = type;
+    this.minLength = minLength;
+    this.maxLength = maxLength;
+  }
+}
+
 function createUnion(...types) {
   return new UnionType(types);
 }
@@ -143,8 +147,8 @@ function createOptional(...types) {
   return createUnion(null, undefined, ...types);
 }
 
-function createArray(type) {
-  return [type];
+function createArray(type, minLength = 0, maxLength = Infinity) {
+  return new ArrayType(type, minLength, maxLength);
 }
 
 srttc.or = createUnion;
